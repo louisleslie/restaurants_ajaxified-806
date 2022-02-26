@@ -1,0 +1,21 @@
+<div class="container mt-3">
+  <%= link_to "back", restaurants_path %>
+  <h1><%= @restaurant.name %></h1>
+  <p><%= @restaurant.address %></p>
+  <h2>Reviews:</h2>
+  <div data-controller="insert-in-list">
+    <div data-insert-in-list-target="items">
+      <% if @restaurant.reviews.present? %>
+        <% @restaurant.reviews.each do |review| %>
+          <p id="<%= "review-#{review.id}" %>"><%= review.content %></p>
+        <% end %>
+      <% else %>
+        <p><%= "There aren't any reviews for #{@restaurant.name}, please leave one below." %></p>
+      <% end %>
+    </div>
+    <%= simple_form_for([@restaurant, @review], data: { insert_in_list_target: "form", action: "submit->insert-in-list#send" }) do |f| %>
+      <%= f.input :content %>
+      <%= f.submit %>
+    <% end %>
+  </div>
+</div>
